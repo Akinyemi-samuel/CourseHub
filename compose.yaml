@@ -1,0 +1,14 @@
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=coursehub'
+      - 'MYSQL_PASSWORD=samuel'
+      - 'MYSQL_ROOT_PASSWORD=root'
+      - 'MYSQL_USER=samuel'
+    ports:
+      - '5432:3306'
+
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+

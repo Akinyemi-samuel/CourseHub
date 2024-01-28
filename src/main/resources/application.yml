@@ -1,0 +1,28 @@
+server:
+  servlet:
+    context-path: /api/v1
+spring:
+  main:
+    allow-circular-references: true
+  application:
+    name: coursehub
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: akinyemisamuelayo@gmail.com
+    password: uzpsqosvsxqjjiuj
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
