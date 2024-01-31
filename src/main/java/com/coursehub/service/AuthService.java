@@ -3,6 +3,7 @@ package com.coursehub.service;
 import com.coursehub.config.JwtService;
 import com.coursehub.dto.request.AuthenticationDto;
 import com.coursehub.dto.request.RegistrationDto;
+import com.coursehub.dto.response.AuthenticationResponse;
 import com.coursehub.exception.ApiException;
 import com.coursehub.model.Role;
 import com.coursehub.model.User;
@@ -11,6 +12,7 @@ import com.coursehub.validations.IsEmailValid;
 import com.coursehub.validations.IsPasswordValid;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,7 +50,7 @@ public class AuthService {
         return optional.orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
     }
 
-    public Map<String, String> UserRegistration(RegistrationDto registrationDto, HttpServletRequest request) {
+    public AuthenticationResponse UserRegistration(RegistrationDto registrationDto, HttpServletRequest request) {
 
         if (!isEmailValid.test(registrationDto.email))
             throw new ApiException("Invalid Email Found", HttpStatus.NOT_ACCEPTABLE);
@@ -58,7 +60,7 @@ public class AuthService {
 
         Optional<User> userOptional = userRepository.findByEmail(registrationDto.email);
         if (userOptional.isPresent()) {
-            throw new ApiException("User Already Exists", HttpStatus.NOT_FOUND);
+            throw new ApiException("Email Already Exists", HttpStatus.NOT_FOUND);
         }
 
         User user = User.builder()
@@ -75,32 +77,55 @@ public class AuthService {
         String url = applicationUrl(request) + "/user/REGISTRATION/confirm?token=" + token;
         emailService.send(user.getEmail(), emailService.confirmRegistrationBuildEmail(user.getLastName(), url));
 
-        return Map.of("response", "Registration successful!");
+        return AuthenticationResponse
+                .builder()
+                .token("Registration successful!")
+                .build();
     }
 
 
-    public Map<String, String> login(AuthenticationDto authenticationDto) {
+    public Map<String, String> login(AuthenticationDto authenticationDto, HttpServletRequest request) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authenticationDto.getEmail(),
-                        authenticationDto.getPassword()
-                )
-        );
-
-        if (!authentication.isAuthenticated()) throw new ApiException("Invalid Credentials", HttpStatus.UNAUTHORIZED);
-        else {
-            // if user is authenticated, return a json web token
-            AuthenticationDto authenticationDto1 = userRepository.findByEmail(authenticationDto.getEmail()).map(u -> AuthenticationDto.builder()
-                    .email(u.getEmail())
-                    .password(u.getPassword())
-                    .build()).get();
-            var token = jwtService.generateToken(authenticationDto1);
-            return Map.of("token", token);
-
+        User user = userRepository.findByEmail(authenticationDto.getEmail()).orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
+        if (!user.isEmailValid()){
+            String token = confirmationTokenService.createConfirmationToken(user);
+            String url = applicationUrl(request) + "/user/REGISTRATION/confirm?token=" + token;
+            emailService.send(user.getEmail(), emailService.confirmRegistrationBuildEmail(user.getLastName(), url));
+            throw new ApiException("Your email address has not been verified, please go to your email address to verify", HttpStatus.UNAUTHORIZED);
         }
 
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationDto.getEmail(),
+                            authenticationDto.getPassword()
+                    )
+            );
+
+            // Check if authentication is successful
+            if (authentication.isAuthenticated()) {
+                // if user is authenticated, return a json web token
+
+                AuthenticationDto authenticatedUser = userRepository.findByEmail(authenticationDto.getEmail())
+                        .map(u -> AuthenticationDto.builder()
+                                .email(u.getEmail())
+                                .password(u.getPassword())
+                                .build())
+                        .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
+
+
+
+                var token = jwtService.generateToken(authenticatedUser);
+                return Map.of("token", token);
+            } else {
+                throw new ApiException("Invalid Credentials. Please check your email or password.", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            // Handle other authentication-related exceptions if needed
+            throw new ApiException("Invalid Credentials. Please check your email or password.", HttpStatus.UNAUTHORIZED);
+        }
     }
+
 
 
     private String applicationUrl(HttpServletRequest request) {

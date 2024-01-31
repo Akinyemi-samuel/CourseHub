@@ -43,6 +43,14 @@ public class PasswordResetTokenService {
         return token;
     }
 
+    @Transactional
+    public String updatePasswordResetToken(User user){
+        Random random = new Random();
+        String token = String.valueOf(1000 + random.nextInt(9000));
+
+       passwordResetTokenRepository.updatePassword(user.getUserId(), token, LocalDateTime.now().plusMinutes(60), LocalDateTime.now());
+        return token;
+    }
 
     public String ConfirmUserPasswordResetTokenByEmail(String email, String token) {
 
@@ -55,21 +63,19 @@ public class PasswordResetTokenService {
 
 
         if (passwordResetTokenOptional.isEmpty()){
-            return "Invalid Token Code";
+            throw new ApiException("Invalid Token Code", HttpStatus.NOT_FOUND);
         }
         PasswordResetToken passwordResetToken =passwordResetTokenOptional.get();
 
         if (! Objects.equals(passwordResetToken.getToken(), token)){
-            return "The Token Entered Is Not Valid";
+            throw new ApiException("The Token Entered Is Not Valid", HttpStatus.NOT_FOUND);
         }
 
         if (passwordResetToken.getExpiresAt().isBefore(LocalDateTime.now())){
-            return "Token is already expired";
+            throw new ApiException("Token is already expired", HttpStatus.NOT_FOUND);
         }
 
         return "Token has been validated successfully";
-
-
     }
 
 

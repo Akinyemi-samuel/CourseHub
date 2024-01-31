@@ -53,6 +53,7 @@ public class User {
     @Getter
     private String password;
 
+    @Getter
     private boolean isEmailValid;
 
     @Getter

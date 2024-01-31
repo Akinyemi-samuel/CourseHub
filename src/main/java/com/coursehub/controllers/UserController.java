@@ -4,6 +4,7 @@ import com.coursehub.dto.request.ForgotPasswordChange;
 import com.coursehub.service.ConfirmationTokenService;
 import com.coursehub.service.PasswordResetTokenService;
 import com.coursehub.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,8 @@ public class UserController {
 
 
     @GetMapping("/passwordreset/{email}/verify")
-    public String passwordResetEmailValid(@PathVariable String email){
-        return userService.checkIfUserExistsPasswordChange(email);
+    public String passwordResetEmailValid(@PathVariable String email, HttpServletRequest request){
+        return userService.checkIfUserExistsForOTPPasswordChange(email, request);
     }
 
 

@@ -30,13 +30,31 @@ public class ConfirmationTokenService {
     public String createConfirmationToken(User user){
         String token = UUID.randomUUID().toString();
 
-        ConfirmationToken confirmationToken = ConfirmationToken.builder()
-                .token(token)
-                .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusMinutes(15))
-                .user(user)
-                .build();
-        confirmationTokenRepository.save(confirmationToken);
+
+        //check if the user has already initiated a change for password
+        Optional<ConfirmationToken> confirmationToken =
+                confirmationTokenRepository.findByUser(user);
+
+
+        if (confirmationToken.isPresent()) {
+            ConfirmationToken confirmationToken1 = confirmationToken.get();
+
+            if (confirmationToken1.getExpiresAt().isBefore(LocalDateTime.now())){
+                confirmationTokenRepository.updateConfirmationToken(user.getUserId(), token, LocalDateTime.now().plusMinutes(15), LocalDateTime.now());
+            }else {
+                throw new ApiException("Your email address has not been verified, please go to your email address to verify", HttpStatus.UNAUTHORIZED);
+            }
+
+        } else {
+            ConfirmationToken confirmationTokens = ConfirmationToken.builder()
+                    .token(token)
+                    .createdAt(LocalDateTime.now())
+                    .expiresAt(LocalDateTime.now().plusMinutes(15))
+                    .user(user)
+                    .build();
+            confirmationTokenRepository.save(confirmationTokens);
+        }
+
         return token;
     }
 

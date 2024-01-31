@@ -1,12 +1,12 @@
 package com.coursehub.service;
 
-import com.coursehub.dto.request.ChangePasswordRequest;
-import com.coursehub.dto.request.ForgotPasswordChange;
 import com.coursehub.exception.ApiException;
 import com.coursehub.model.PasswordResetToken;
 import com.coursehub.model.User;
+import com.coursehub.repositories.PasswordResetTokenRepository;
 import com.coursehub.repositories.UserRepository;
 import com.coursehub.validations.IsPasswordValid;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,39 +21,65 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordResetTokenService passwordResetTokenService;
+    private final ConfirmationTokenService confirmationTokenService;
 
-    public UserService(IsPasswordValid isPasswordValid, UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, PasswordResetTokenService passwordResetTokenService) {
+    public UserService(IsPasswordValid isPasswordValid, UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, PasswordResetTokenRepository passwordResetTokenRepository, PasswordResetTokenService passwordResetTokenService, ConfirmationTokenService confirmationTokenService) {
         this.isPasswordValid = isPasswordValid;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.passwordResetTokenService = passwordResetTokenService;
+        this.confirmationTokenService = confirmationTokenService;
     }
 
 
-
-    public String checkIfUserExistsPasswordChange(String email){
+    public String checkIfUserExistsForOTPPasswordChange(String email, HttpServletRequest request) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            String token = passwordResetTokenService.createPasswordResetToken(user);
-            emailService.send(email, emailService.passwordResetTokenBuildemail(user.getLastName(), token));
-        }else {
+
+            // check if the email provided is already verified
+            if (!user.isEmailValid()){
+                String token = confirmationTokenService.createConfirmationToken(user);
+                String url = applicationUrl(request) + "/user/REGISTRATION/confirm?token=" + token;
+                emailService.send(user.getEmail(), emailService.confirmRegistrationBuildEmail(user.getLastName(), url));
+                throw new ApiException("Your email address has not been verified, please go to your email address to verify", HttpStatus.UNAUTHORIZED);
+            }
+
+            //check if the user has already initiated a change for password
+            Optional<PasswordResetToken> passwordResetTokenOptional =
+                    passwordResetTokenRepository.findByUser(user);
+
+            if (passwordResetTokenOptional.isPresent()) {
+                String token = passwordResetTokenService.updatePasswordResetToken(user);
+                emailService.send(email, emailService.passwordResetTokenBuildemail(user.getLastName(), token));
+            } else {
+                String token = passwordResetTokenService.createPasswordResetToken(user);
+                emailService.send(email, emailService.passwordResetTokenBuildemail(user.getLastName(), token));
+            }
+
+        } else {
             throw new ApiException("User not found", HttpStatus.NOT_FOUND);
         }
         return "Please check your email address for further instructions";
     }
 
 
-    public Map<String, String> updateUserPassword(String email, String password){
-        userRepository.updatePassword(email, password);
+    public Map<String, String> updateUserPassword(String email, String password) {
+
+        userRepository.updatePassword(email, passwordEncoder.encode(password));
         return Map.of("reponse", "Password updated successfully");
     }
 
 
 
 
+    private String applicationUrl(HttpServletRequest request) {
+        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    }
        /* public ResponseEntity<String> forgotPassword(ChangePasswordRequest changePasswordRequest){
 
 

@@ -16,10 +16,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username).map(u -> AuthenticationDto.builder()
-                .email(u.getEmail())
-                .password(u.getPassword())
-                .role(u.getRole())
-                .build()).orElseThrow(() -> new UsernameNotFoundException("Invalid Credentials"));
+        try{
+            return userRepository.findByEmail(username).map(u -> AuthenticationDto.builder()
+                    .email(u.getEmail())
+                    .password(u.getPassword())
+                    .role(u.getRole())
+                    .build()).orElseThrow(() -> new UsernameNotFoundException("Invalid Credentials"));
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("Invalid Credentials", e);
+        }
+
     }
 }

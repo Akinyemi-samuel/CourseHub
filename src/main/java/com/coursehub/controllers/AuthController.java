@@ -2,6 +2,7 @@ package com.coursehub.controllers;
 
 import com.coursehub.dto.request.AuthenticationDto;
 import com.coursehub.dto.request.RegistrationDto;
+import com.coursehub.dto.response.AuthenticationResponse;
 import com.coursehub.model.User;
 import com.coursehub.service.AuthService;
 import com.coursehub.service.ConfirmationTokenService;
@@ -33,18 +34,18 @@ public class AuthController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Map<String, String> userRegistration(@RequestBody RegistrationDto registrationDto, HttpServletRequest request) {
+    public ResponseEntity<AuthenticationResponse> userRegistration(@RequestBody RegistrationDto registrationDto, HttpServletRequest request) {
         log.info("AdminController registers Admin: {}", registrationDto.email);
-        return authService.UserRegistration(registrationDto, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.UserRegistration(registrationDto, request));
     }
 
 
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public Map<String, String> userAuthentication(@RequestBody AuthenticationDto authenticationDto) {
+    public Map<String, String> userAuthentication(@RequestBody AuthenticationDto authenticationDto, HttpServletRequest request) {
         log.info("AdminController authenticates Admin: {}", authenticationDto.getEmail());
-        return authService.login(authenticationDto);
+        return authService.login(authenticationDto, request);
     }
 
 

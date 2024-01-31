@@ -36,6 +36,6 @@ public class ConfirmationToken {
     private LocalDateTime ConfirmedAt;
 
     @OneToOne
-    @JoinColumn(name = "User_id")
+    @JoinColumn(name = "user")
     private User user;
 }
