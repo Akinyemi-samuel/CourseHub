@@ -8,7 +8,7 @@ spring:
     name: coursehub
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -26,3 +26,5 @@ spring:
           auth: true
           starttls:
             enable: true
+flyway:
+  baselineOnMigrate: true
