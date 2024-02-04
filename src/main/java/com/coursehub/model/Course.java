@@ -31,7 +31,7 @@ public class Course {
     @Getter private String imageUrl;
 
     @OneToMany(mappedBy = "course")
-    private List<Review> reviews = new ArrayList<>();
+    @Getter private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "course")
     private List<Booking> bookings = new ArrayList<>();
