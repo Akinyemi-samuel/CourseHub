@@ -1,5 +1,5 @@
 spring:
-  profile: prod
+  profile: production
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: 5z9DGjBblgQYS0Fa1aA8
