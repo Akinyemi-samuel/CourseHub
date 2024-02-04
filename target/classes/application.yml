@@ -3,7 +3,7 @@ server:
     context-path: /api/v1
 spring:
   profiles:
-    active: production
+    active: prod
   main:
     allow-circular-references: true
   application:
