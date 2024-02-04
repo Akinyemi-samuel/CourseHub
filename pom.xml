@@ -92,6 +92,7 @@
     </dependencies>
 
     <build>
+        <finalName>course-hub</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

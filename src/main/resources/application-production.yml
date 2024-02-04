@@ -1,0 +1,20 @@
+spring:
+  profile: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 5z9DGjBblgQYS0Fa1aA8
+    url: jdbc:mysql://bhahmk1ikylus3tf7ce9-mysql.services.clever-cloud.com:3306/bhahmk1ikylus3tf7ce9
+    username: ug1gzxa4bsa595zn
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    logging:
+      level:
+        org:
+          springframework:
+            core:
+              env=DEBUG:
