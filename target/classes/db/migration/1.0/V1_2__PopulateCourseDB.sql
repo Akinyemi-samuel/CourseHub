@@ -88,7 +88,7 @@ VALUES (23, 'Full-Stack Web Development Bootcamp', 'Web Development', 'Jane Doe'
 
 -- Python for Data Science
 INSERT INTO course (course_id, name, category, instructor, duration, date, time, location, price, description, image_url)
-VALUES (24, 'Python for Data Science', 'Data Science', 'Robert Johnson', 6, '2024-03-10', '18:30:00', 'Data Science Lab', 149.99, 'Delve into the fascinating realm of data science using Python. Robert Johnson, a seasoned data scientist, will guide you through this 6-week journey, exploring Python\'s powerful capabilities for analytics. From data manipulation to machine learning, this course equips you with the skills needed to thrive in the world of data.', 'https://example.com/python_data_science_image.jpg');
+VALUES (24, 'Python for Data Science', 'Data Science', 'Robert Johnson', 6, '2024-03-10', '18:30:00', 'Data Science Lab', 149.99, 'Delve into the fascinating realm of data science using Python. Robert Johnson, a seasoned data scientist, will guide you through this 6-week journey, exploring Python\'s powerful capabilities for analytics. From data manipulation to machine learning, this course equips you with the skills needed to thrive in the world of data.', 'https://img-c.udemycdn.com/course/480x270/3142166_a637_3.jpg');
 
 -- Android App Development Workshop
 INSERT INTO course (course_id, name, category, instructor, duration, date, time, location, price, description, image_url)

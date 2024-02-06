@@ -2,8 +2,6 @@ server:
   servlet:
     context-path: /api/v1
 spring:
-  profiles:
-    active: prod
   main:
     allow-circular-references: true
   application:
