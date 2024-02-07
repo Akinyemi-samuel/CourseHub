@@ -19,9 +19,8 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user")
-    private User user;
+
+    private Long user;
 
     @ManyToOne
     @JoinColumn(name = "course")
