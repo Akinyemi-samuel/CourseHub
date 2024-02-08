@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    boolean existsByUserIdAndCourseId(Long userId, Course courseId);
+    boolean existsByUserAndCourse(Long userId, Course courseId);
 }

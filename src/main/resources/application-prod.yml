@@ -2,9 +2,9 @@ spring:
   profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: 5z9DGjBblgQYS0Fa1aA8
-    url: jdbc:mysql://bhahmk1ikylus3tf7ce9-mysql.services.clever-cloud.com:3306/bhahmk1ikylus3tf7ce9
-    username: ug1gzxa4bsa595zn
+    password: pjJR5IK0ez4H6Ony7gtk
+    url: jdbc:mysql://bxbfpebksvzlsklaxbhi-mysql.services.clever-cloud.com:3306/bxbfpebksvzlsklaxbhi
+    username: urlkvndlhig3dnt7
   jpa:
     hibernate:
       ddl-auto: update
