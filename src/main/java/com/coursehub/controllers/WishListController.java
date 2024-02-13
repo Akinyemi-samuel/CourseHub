@@ -5,6 +5,7 @@ import com.coursehub.dto.request.WishListDto;
 import com.coursehub.model.WishList;
 import com.coursehub.service.WishlistService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,4 +34,12 @@ public class WishListController {
     public List<WishList> getAllProductByUserWishListId(@PathVariable(value = "userId") Long userId) {
         return wishlistService.getAllCourseByUserWishListId(userId);
     }
+
+
+    @DeleteMapping("/{userId}/courses/{courseId}")
+    public ResponseEntity<?> removeCourseFromWishlist(@PathVariable Long userId, @PathVariable Long courseId) {
+        wishlistService.deleteCourseFromWishlist(userId, courseId);
+        return ResponseEntity.ok().build();
+    }
+
 }

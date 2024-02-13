@@ -13,8 +13,10 @@ public interface WishListRepository extends JpaRepository<WishList, Long> {
     @Query(
             value = "SELECT w FROM WishList w WHERE w.userId = :userId"
     )
-    List<WishList> findAllWishListById(Long userId);
+    List<WishList> findAllWishListById(User userId);
 
 
     boolean existsByUserIdAndCourseId(User userId, Course courseId);
+
+    void deleteByUserIdAndCourseId(User userId, Course courseId);
 }

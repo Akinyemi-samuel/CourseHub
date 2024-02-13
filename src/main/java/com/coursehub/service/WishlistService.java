@@ -8,6 +8,7 @@ import com.coursehub.model.WishList;
 import com.coursehub.repositories.CourseRepository;
 import com.coursehub.repositories.UserRepository;
 import com.coursehub.repositories.WishListRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,20 @@ public class WishlistService {
     }
 
     public List<WishList> getAllCourseByUserWishListId(Long id)  {
-        List<WishList> wishLists = wishListRepository.findAllWishListById(id);
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        List<WishList> wishLists = wishListRepository.findAllWishListById(user);
         return wishLists;
+    }
+
+
+    @Transactional
+    public void deleteCourseFromWishlist(Long userId, Long courseId) {
+        // Check if user and course exist
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+
+        // Delete the course from the user's wishlist
+        wishListRepository.deleteByUserIdAndCourseId(user, course);
     }
 
 
