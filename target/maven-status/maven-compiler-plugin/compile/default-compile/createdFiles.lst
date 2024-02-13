@@ -1,0 +1,10 @@
+com\coursehub\dto\request\WishListDto.class
+com\coursehub\dto\request\BookingDto$BookingDtoBuilder.class
+com\coursehub\model\WishList.class
+com\coursehub\model\WishListId.class
+com\coursehub\model\WishList$WishListBuilder.class
+com\coursehub\controllers\WishListController.class
+com\coursehub\service\WishlistService.class
+com\coursehub\service\BookingService.class
+com\coursehub\dto\request\BookingDto.class
+com\coursehub\repositories\WishListRepository.class

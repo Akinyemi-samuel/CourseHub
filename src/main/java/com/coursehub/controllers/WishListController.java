@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/wishlist")
@@ -22,9 +23,9 @@ public class WishListController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public String addProductToWishList(@RequestBody WishListDto wishListDto) throws Exception {
+    public Map<String, String> addProductToWishList(@RequestBody WishListDto wishListDto) throws Exception {
         wishlistService.addCourseToWishListByUser(wishListDto);
-        return "Course Added to Wishlist successfully";
+        return Map.of("response", "Course Added to Wishlist successfully");
     }
 
     @ResponseStatus(HttpStatus.FOUND)

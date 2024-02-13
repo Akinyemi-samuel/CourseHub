@@ -2,6 +2,7 @@ package com.coursehub.service;
 
 import com.coursehub.config.JwtService;
 import com.coursehub.dto.request.AuthenticationDto;
+import com.coursehub.dto.request.BookingDto;
 import com.coursehub.dto.request.RegistrationDto;
 import com.coursehub.dto.response.AuthenticationResponse;
 import com.coursehub.exception.ApiException;
@@ -12,7 +13,6 @@ import com.coursehub.validations.IsEmailValid;
 import com.coursehub.validations.IsPasswordValid;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -87,7 +87,7 @@ public class AuthService {
     public Map<String, String> login(AuthenticationDto authenticationDto, HttpServletRequest request) {
 
         User user = userRepository.findByEmail(authenticationDto.getEmail()).orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
-        if (!user.isEmailValid()){
+        if (!user.isEmailValid()) {
             String token = confirmationTokenService.createConfirmationToken(user);
             String url = applicationUrl(request) + "/user/REGISTRATION/confirm?token=" + token;
             emailService.send(user.getEmail(), emailService.confirmRegistrationBuildEmail(user.getLastName(), url));
@@ -114,7 +114,6 @@ public class AuthService {
                         .orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
 
 
-
                 var token = jwtService.generateToken(authenticatedUser);
                 return Map.of("token", token);
             } else {
@@ -125,7 +124,6 @@ public class AuthService {
             throw new ApiException("Invalid Credentials. Please check your email or password.", HttpStatus.UNAUTHORIZED);
         }
     }
-
 
 
     private String applicationUrl(HttpServletRequest request) {

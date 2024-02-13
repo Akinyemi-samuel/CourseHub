@@ -28,7 +28,5 @@ public class WishList {
     @JoinColumn(name = "course_id")
     @JsonIgnoreProperties({"productStatus", "category", "wishList"})
     private Course courseId;
-
-
 }
 
