@@ -5,6 +5,7 @@ C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\dto\request\Regis
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\dto\UserInfo.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\config\ApplicationConfig.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\dto\request\ForgotPasswordChange.java
+C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\dto\response\ReviewDto.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\dto\request\WishListDto.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\model\WishList.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\service\BookingService.java
@@ -12,6 +13,7 @@ C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\model\Review.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\repositories\ConfirmationTokenRepository.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\config\JwtAuthenticationSuccessHandler.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\controllers\BookingController.java
+C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\controllers\ReviewsController.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\model\ConfirmationToken.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\controllers\WishListController.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\model\Booking.java
@@ -32,6 +34,7 @@ C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\model\User.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\validations\IsPasswordValid.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\controllers\AuthController.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\model\WishListId.java
+C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\service\ReviewService.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\dto\request\FacebookLoginRequest.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\repositories\WishListRepository.java
 C:\Users\samfr\Documents\CourseHub\src\main\java\com\coursehub\config\JwtAuthenticationFilter.java

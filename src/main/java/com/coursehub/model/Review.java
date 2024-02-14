@@ -20,10 +20,12 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "course")
     private Course course;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "user")
     private User user;

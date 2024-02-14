@@ -31,6 +31,7 @@ public class Course {
     @Getter private String category;
     @Getter private String imageUrl;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "course")
     @Getter private List<Review> reviews = new ArrayList<>();
 
