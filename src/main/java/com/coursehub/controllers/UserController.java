@@ -24,16 +24,15 @@ public class UserController {
     private final UserService userService;
 
 
-    @GetMapping("/{id}")
-    public FacebookLoginRequest findUserById(@PathVariable(name = "id") Long id){
-       return userService.findUserById(id);
-    }
-
-
     public UserController(ConfirmationTokenService confirmationTokenService, PasswordResetTokenService passwordResetTokenService, UserService userService) {
         this.confirmationTokenService = confirmationTokenService;
         this.passwordResetTokenService = passwordResetTokenService;
         this.userService = userService;
+    }
+
+    @GetMapping("/{id}")
+    public FacebookLoginRequest findUserById(@PathVariable(name = "id") Long id){
+        return userService.findUserById(id);
     }
 
 
