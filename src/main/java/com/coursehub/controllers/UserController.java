@@ -1,11 +1,14 @@
 package com.coursehub.controllers;
 
+import com.coursehub.dto.request.FacebookLoginRequest;
 import com.coursehub.dto.request.ForgotPasswordChange;
+import com.coursehub.exception.ApiException;
 import com.coursehub.service.ConfirmationTokenService;
 import com.coursehub.service.PasswordResetTokenService;
 import com.coursehub.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,13 @@ public class UserController {
     private final ConfirmationTokenService confirmationTokenService;
     private final PasswordResetTokenService passwordResetTokenService;
     private final UserService userService;
+
+
+    @GetMapping("/{id}")
+    public FacebookLoginRequest findUserById(@PathVariable(name = "id") Long id){
+       return userService.findUserById(id);
+    }
+
 
     public UserController(ConfirmationTokenService confirmationTokenService, PasswordResetTokenService passwordResetTokenService, UserService userService) {
         this.confirmationTokenService = confirmationTokenService;

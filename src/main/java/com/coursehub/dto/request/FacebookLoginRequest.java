@@ -25,6 +25,4 @@ public class FacebookLoginRequest{
     public String lastName;
     public String email;
 
-
-
 }

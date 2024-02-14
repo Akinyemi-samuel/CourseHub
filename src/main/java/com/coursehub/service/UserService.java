@@ -1,5 +1,6 @@
 package com.coursehub.service;
 
+import com.coursehub.dto.request.FacebookLoginRequest;
 import com.coursehub.exception.ApiException;
 import com.coursehub.model.PasswordResetToken;
 import com.coursehub.model.User;
@@ -33,6 +34,19 @@ public class UserService {
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.passwordResetTokenService = passwordResetTokenService;
         this.confirmationTokenService = confirmationTokenService;
+    }
+
+
+    public FacebookLoginRequest findUserById(Long userId){
+
+        FacebookLoginRequest facebookLoginRequest = userRepository.findById(userId)
+                .map(n -> FacebookLoginRequest.builder()
+                     .firstName(n.getFirstName())
+                     .lastName(n.getLastName())
+                     .email(n.getEmail())
+                     .build()).orElseThrow(() -> new ApiException("User not found", HttpStatus.NOT_FOUND));
+
+        return facebookLoginRequest;
     }
 
 
