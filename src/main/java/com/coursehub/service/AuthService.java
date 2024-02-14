@@ -60,7 +60,7 @@ public class AuthService {
 
         Optional<User> userOptional = userRepository.findByEmail(registrationDto.email);
         if (userOptional.isPresent()) {
-            throw new ApiException("Email Already Exists", HttpStatus.NOT_FOUND);
+            throw new ApiException("User Already Exists", HttpStatus.NOT_FOUND);
         }
 
         User user = User.builder()
